@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ESP">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Social Media Aggregator</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="tiburon.jpg" />
+    <style>
+        /* Estilos adicionales para la página del agregador de redes sociales */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            /* Fondo con imagen fija y animación de gradiente */
+            /* background: url('wallpaperbetter.com_1920x1080.jpg') no-repeat center center fixed; */
+            /* background-size: 110% 110%; */
+            /* animation: gradientBG 15s ease infinite; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Capa de superposición oscura para el fondo */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1;
+        }
+        /* Video de fondo */
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        /* Contenedor principal del perfil */
+        .profile-container {
+            position: relative;
+            z-index: 2;
+            width: 380px;
+            padding: 40px;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            overflow: hidden;
+            animation: fadeIn 1.5s ease forwards;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        /* Imagen del perfil con borde redondeado y sombra */
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            object-fit: cover;
+            margin: 0 auto 15px auto;
+            display: block;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        /* Nombre de usuario con estilo destacado */
+        .username {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        /* Texto de última conexión con estilo en cursiva */
+        .last-seen {
+            font-size: 16px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            font-style: italic;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        /* Contenedor para el estado con indicador */
+        .status-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        /* Imagen del estado con borde redondeado y sombra */
+        .status-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            object-fit: cover;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+        }
+        /* Texto del estado con sombra */
+        .status-text {
+            font-size: 14px;
+            color: #d1d1d1;
+            text-shadow: 0 0 3px rgba(0,0,0,0.7);
+        }
+        /* Indicador de estado animado */
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            background-color: #4caf50;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #4caf50;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 6px #4caf50; }
+            50% { box-shadow: 0 0 12px #4caf50; }
+            100% { box-shadow: 0 0 6px #4caf50; }
+        }
+        /* Contenedor de iconos sociales */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+        /* Estilo para los enlaces de iconos sociales */
+        .social-icons a {
+            color: #fff;
+            font-size: 32px;
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 0 3px rgba(255,255,255,0.7));
+        }
+        /* Efecto hover para iconos sociales */
+        .social-icons a:hover {
+            color: #1da1f2;
+            transform: scale(1.3);
+            filter: drop-shadow(0 0 8px #1da1f2);
+        }
+        /* Tamaño y color de los SVG de iconos sociales */
+        .social-icons svg {
+            width: 36px;
+            height: 36px;
+            fill: currentColor;
+        }
+        /* Contenedor para el contador de vistas */
+        .view-count {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 16px;
+            filter: drop-shadow(0 0 3px rgba(0,0,0,0.7));
+        }
+        /* Tamaño y color de los SVG del contador de vistas */
+        .view-count svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+    </style>
+</head>
+<body>
+    <video class="background-video" autoplay muted loop playsinline preload="auto">
+        <source src="background.mp4" type="video/mp4">
+    </video>
+    <!-- Capa de superposición oscura para el fondo -->
+    <div class="background-overlay"></div>
+    <!-- Contenedor principal del perfil -->
+    <div class="profile-container">
+        <!-- Imagen del perfil con borde redondeado y sombra -->
+        <img src="tiburon-removebg-preview.png" alt="Profile Picture" class="profile-image"/>
+        <!-- Nombre de usuario -->
+        <div class="username">obiispk</div>
+        <!-- Texto de última conexión -->
+        <div class="last-seen">Why always me?</div>
+        <!-- Contenedor de iconos sociales -->
+        <div class="social-icons">
+            <!-- Enlace a Instagram -->
+            <a href="https://www.instagram.com/obiispk/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                <img src="insta.png" alt="instagram" style="width:65px; height:65px; filter: drop-shadow(0 0 3px rgba(255,255,255,0.7)); transition: filter 0.3s ease, transform 0.3s ease;" onmouseover="this.style.filter='drop-shadow(0 0 8px #FF0000)'; this.style.transform='scale(1.3)';" onmouseout="this.style.filter='drop-shadow(0 0 3px rgba(255,255,255,0.7))'; this.style.transform='scale(1)';" />    
+            </a>
+            <!-- Enlace a YouTube -->
+            <a href="https://www.youtube.com/@obiispk" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+                <img src="youtube-icon-png-12.png" alt="YouTube" style="width:36px; height:36px; filter: drop-shadow(0 0 3px rgba(255,255,255,0.7)); transition: filter 0.3s ease, transform 0.3s ease;" onmouseover="this.style.filter='drop-shadow(0 0 8px #FF0000)'; this.style.transform='scale(1.3)';" onmouseout="this.style.filter='drop-shadow(0 0 3px rgba(255,255,255,0.7))'; this.style.transform='scale(1)';" />
+            </a>
+            <!-- Enlace a X (Twitter) -->
+            <a href="https://x.com/obispkk" aria-label="X" target="_blank" rel="noopener noreferrer">
+                <img src="LOGOX-removebg-preview.png" alt="X" style="width: 55px; height: 55px; filter: drop-shadow(0 0 3px rgba(255,255,255,0.7)); transition: filter 0.3s ease, transform 0.3s ease;" onmouseover="this.style.filter='drop-shadow(0 0 8px #FF0000)'; this.style.transform='scale(1.3)';" onmouseout="this.style.filter='drop-shadow(0 0 3px rgba(255,255,255,0.7))'; this.style.transform='scale(1)';" />
+            </a>
+        </div>
+    </div>
+    <script>
+        const video = document.querySelector('.background-video');
+        if (video) {
+            video.playbackRate = 1;
+            video.addEventListener('ratechange', () => {
+                if (video.playbackRate !== 1) {
+                    video.playbackRate = 1;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
